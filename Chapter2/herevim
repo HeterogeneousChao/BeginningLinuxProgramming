@@ -1,0 +1,15 @@
+#!/bin/sh
+
+vim a_text_file <<!aaa!
+gg
+3
+gg
+dd
+G
+/%s is/was
+:
+wq!
+!aaa!
+
+exit 0
+
