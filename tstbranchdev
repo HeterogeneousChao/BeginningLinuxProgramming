@@ -1,5 +1,9 @@
 this is aaaa  a test txt file 
+<<<<<<< HEAD
 bbbbbbbbbbbbbbbbbb
+=======
+aaaaaaaaaa
+>>>>>>> 6857137852a8d8a19f9ed52e5984438a3ff07f3d
 add some test woed~!
         
 	add some tst word from windows~
