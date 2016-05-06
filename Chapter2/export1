@@ -1,0 +1,7 @@
+#!/bin/sh
+
+foo="The first meta-syntactic variable"
+export bar="THe second meta-syntactic variable"
+
+export2
+
