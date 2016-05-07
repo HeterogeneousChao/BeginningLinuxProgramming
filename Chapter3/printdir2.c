@@ -46,21 +46,18 @@ closedir(dp);
 }
 
 
-int main(int agrc, char *argv[])
+int main(int argc, char *argv[])
 {
-	int size_t = 256;
-	char dir_name[256], *cur_dir;
-	
-	cur_dir = getcwd(dir_name, size_t);
+	char *topdir = ".";
+	if (argc == 2)
+		topdir=argv[1];
 
-	printf("Directory scan of %s:\n", dir_name);
-	printdir(cur_dir, 0);
+	printf("Directory scan of %s:\n", topdir);
+	printdir(topdir, 0);
 	printf("done.\n");
-
-	printf("%*s\n", 10, "abcc");
 
 
 	exit(0);
-}
+
 
 
