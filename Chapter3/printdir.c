@@ -57,6 +57,8 @@ int main(int agrc, char *argv[])
 	printdir(cur_dir, 0);
 	printf("done.\n");
 
+	printf("%*s\n", 10, "abcc");
+
 
 	exit(0);
 }
