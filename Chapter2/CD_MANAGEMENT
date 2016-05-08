@@ -64,7 +64,7 @@ insert_title(){
 
 
 insert_track(){
-	recho $* >> $tracks_file
+	echo $* >> $tracks_file
 	return
 }
 
