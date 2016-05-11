@@ -112,3 +112,166 @@ int main()
 }
 
 
+int getchoice(char *greet, char *choices[])
+{
+	static int selected_row = 0;
+	int max_row = 0;
+	int start_screenrow = MESSAGE_LINE, start_screencol = 10;
+	char **option;
+	int selected;
+	int key = 0;
+
+	option = choices;
+	while(*option){
+		max_row ++;
+		option ++;
+	}
+
+	/* protect against menu getting shorter when CD deleted  */
+	if (selected_row >= max_row){
+		selected_row = 0;
+	}
+
+	clear_all_screen();
+	mvprintw(start_screenrow - 2, start_screencol, greet);
+	keypad(stdscr, TRUE);
+	cbreak();
+	noecho();
+	key = 0;
+
+	while (key != 'q' && key != KEY_ENTER && key != '\n'){
+		if (key == KEY_UP){
+			if (selected_row == 0)
+                selected_row = max_row - 1;
+			else
+				selected_row --;
+		}
+
+		if (keu == KEY_DOWN){
+			if (selected_row == (max_row - 1))
+				selected_row = 0;
+			else
+				selected_row ++;
+		}
+
+		selected = *choices[selected_row];
+		
+		draw_menu(choices, selected_row, start_screenrow,
+				start_screencol);
+		key = getch();
+
+	}
+
+	keypad(stdscr, FALSE);
+	nocbreak();
+	echo();
+
+	if(key == 'q'){
+		selected = 'q';
+	}
+
+	return (selected);
+
+}
+
+
+
+
+void draw_menu(char *option[], int current_highlight,
+		int start_row, int start_col){
+	int current_row = 0;
+	char **option_ptr;
+	char *txt_ptr;
+	option_ptr = options;
+
+	while(*option_ptr){
+		if (current_row == current_highlight)
+			attron(A_STANDOUT);
+
+		txt_ptr = options[current_row];
+		txt_ptr ++;
+		mvprintw(start_row + current_row, start_col, "%s", txt_ptr);
+		
+		if (current_row == current_highlight)
+			attroff(A_STANDOUT);
+		current_row ++;
+		option_ptr ++;
+	}
+
+	mvprintw(start_row + current_row + 3, start_col,
+			 "Move highlight then press Return ");
+
+	refresh();
+}
+
+
+void clear_all_screen()
+{
+	clear();
+	mvprintw(2, 20, "%ss", "CD Database Application");
+	
+	if (current_cd[0]) {
+		mvprintw(ERROR_LINE, 0, "Current CD: %s: %s %s\n", current_cat, current_cd);
+	}
+
+	refresh();
+}
+
+void add_record()
+{
+	char catalog_number[MAX_STRING];
+	char cd_title[MAX_STRING];
+	char cd_type[MAX_STRING];
+	char cd_artist[MAX_STRING];
+	char cd_entry[MAX_STRING];
+
+	int screenrow = MESSAGE_LINE;
+	int screencol = 10;
+
+	clear_all_screen();
+	mvprintw(screenrow, screencol, "Enter new CD details");
+	screenrow += 2;
+
+	mvprintw(screenrow, screencol, "Catalog Number: ");
+	get_string(catalog_number);
+	screenrow ++;
+
+	mvprintw(screenrow, screencol, "      CD Title: ");
+	get_string(cd_title);
+	screenrow ++;
+
+	mvprintw(screenrow, screencol, "      CD Type:");
+	get_string(cd_type);
+	screenrow ++;
+
+	mvprintw(screenrow, screencol, "      Artist: ");
+	get_string(cd_aritst);
+	screenrow ++;
+
+	mvprintw(PROMPT_LINE - 2, 5, "About to add this new entry:");
+	sprintf(cd_entry, "%s, %s, %s, %s", 
+					catalog_number, cd_title, cd_type, cd_artist);
+	mvprintw(PROMPT_LINE, 5, "%s", cd_entry);
+	refresh();
+	move(PROMPT_LINE, 0);
+	if (get_confirm()){
+		insert_title(cd_entry);
+		strcpy(current_cd, cd_title);
+		strcpy(current_cat, catalog_number);
+	}
+
+}
+
+
+void get_string(char *string)
+{
+	int len;
+
+	wgetnstr(stdscr, string, MAX_STRING);
+	len = strlen(string);
+	if (len > 0 && string[len - 1] == '\n')
+		string[len - 1] = '\0';
+}
+
+
+
