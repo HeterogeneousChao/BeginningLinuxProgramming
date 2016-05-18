@@ -9,7 +9,7 @@
 #include <unistd.h>
 #include <stdlib.h>
 #include <stdio.h>
-#include <curses.h>
+#include <ncurses.h>
 #include <string.h>
 
 
