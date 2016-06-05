@@ -13,7 +13,7 @@
 
 
 #define TEST_DB_FILE "/tmp/dbm1_test"
-#define ITIMES_USED
+#define ITEMS_USED 3
 
 
 struct test_data {
@@ -25,22 +25,22 @@ struct test_data {
 
 int main()
 {
-	struct test_data items_to_store[ITEMS_USER];
+	struct test_data items_to_store[ITEMS_USED];
 	struct test_data item_retrieved;
 
 	char key_to_use[20];
 	int i, result;
 
-	datnm key_datum;
+	datum key_datum;
 	datum data_datum;
 
-	DBM *dem_ptr;
+	DBM *dbm_ptr;
  	
-	dbm_ptr = dbm_open(TEST_DB_FILEM O_RDWR | O_CREAT, 0666);
+	dbm_ptr = dbm_open(TEST_DB_FILE, O_RDWR | O_CREAT, 0666);
 	
 	if (!dbm_ptr) {
 		fprintf(stderr, "Failed to open database\n");
-		exit(EXIT_RAILURE);
+		exit(EXIT_FAILURE);
 	}	
 	
 	memset(items_to_store, '\0', sizeof(items_to_store));
@@ -53,9 +53,9 @@ int main()
 	items_to_store[1].any_integer = 13;
 	strcpy(items_to_store[1].more_chars, "unlucky?");
 
-strcpy(items_to_storep[2].misc_chars, "Third");
-items_to_store[2].anyinteger = 3;
-strcpy(items_to_store[2].more_chars "baz");
+strcpy(items_to_store[2].misc_chars, "Third");
+items_to_store[2].any_integer = 3;
+strcpy(items_to_store[2].more_chars, "baz");
 
 
 	for (i = 0; i < ITEMS_USED; i ++) {
@@ -83,7 +83,7 @@ strcpy(items_to_store[2].more_chars "baz");
 
 	data_datum = dbm_fetch(dbm_ptr, key_datum);
 	
-	if (data_datum.dpte) {
+	if (data_datum.dptr) {
 		printf("Data retrieved\n");
 		memcpy(&item_retrieved, data_datum.dptr, data_datum.dsize);
 		printf("Retrieved item - %s %d %s\n",
@@ -95,7 +95,7 @@ strcpy(items_to_store[2].more_chars "baz");
 		printf("No data found for key %s\n", key_to_use);
 	}
 	
-	dbm_close(dbm_pte);
+	dbm_close(dbm_ptr);
 	exit(EXIT_SUCCESS);
 	
 }
