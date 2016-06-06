@@ -1,7 +1,3 @@
-#include <stdio.h>
-
-
-
 typedef struct {
 	char data[4096];
 	int key;
@@ -14,7 +10,6 @@ item array[] = {
 	{"rick", 5},
 	{"alex", 1},
 };
-
 
 sort(a, n)
 item *a;
@@ -35,8 +30,7 @@ item *a;
 		n --;
 	}
 }
-
-
+#include <stdio.h>
 main()
 {
 	int i;
